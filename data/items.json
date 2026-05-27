@@ -1,0 +1,20 @@
+{
+    "potion": {
+        "name": "Potion",
+        "description": "A magical liquid that restores health.",
+        "price": 50,
+        "heal_amount": 50
+    },
+    "sword": {
+        "name": "Sword",
+        "description": "A sharp blade for combat.",
+        "price": 100,
+        "attack_power": 20
+    },
+    "shield":{
+        "name": "Shield",
+        "description": "A sturdy barrier for defense.",
+        "price": 150,
+        "defense_power": 15
+    }
+}
