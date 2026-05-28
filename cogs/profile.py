@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord
 import json
 import os
-from utils.data_manager import load_users, save_users
+from utils.data_manager import load_users, save_users,ensure_user_fields
 from utils.level_system import get_exp_to_next_level
 class Profile(commands.Cog):
     def __init__(self, bot):
@@ -51,6 +51,8 @@ class Profile(commands.Cog):
             return  
         
         user = users[user_id]
+        ensure_user_fields(user)
+
 
         embed = discord.Embed(title=f"{user['name']}", description="Thông tin cơ bản", color=0x00ff00)
    

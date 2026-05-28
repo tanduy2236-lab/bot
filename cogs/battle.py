@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random
 import json
-from utils.data_manager import load_users, save_users, load_json
+from utils.data_manager import load_users, save_users, load_json,ensure_user_fields
 from utils.level_system import check_level_up
 ENEMIES = load_json('data/enemies.json')
 
@@ -21,6 +21,7 @@ class Battle(commands.Cog):
                 return
         
             user = users[user_id]
+            ensure_user_fields(user)
 
             if enemy_name not in ENEMIES:
                 await ctx.send("Không tìm thấy kẻ thù này!")

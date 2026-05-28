@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import json
-from utils.data_manager import load_users, save_users, load_json
+from utils.data_manager import load_users, save_users, load_json,ensure_user_fields
 class Inventory(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -15,7 +15,7 @@ class Inventory(commands.Cog):
             await ctx.send("Bạn chưa bắt đầu trò chơi, hãy sử dụng lệnh !begin để bắt đầu.")
             return  
         user = users[user_id]
-
+        ensure_user_fields(user)
         inventory = user.get("inventory", [])
 
         if len(inventory) == 0:
@@ -43,6 +43,7 @@ class Inventory(commands.Cog):
             return
         
         user = users[user_id]
+        ensure_user_fields(user)
 
         inventory = user.get("inventory", [])
 
@@ -74,6 +75,7 @@ class Inventory(commands.Cog):
             return
         
         user = users[user_id]
+        ensure_user_fields(user)
         items = load_json('data/items.json')
         if item_name not in items:
             await ctx.send("Vật phẩm này không tồn tại!")
@@ -103,6 +105,7 @@ class Inventory(commands.Cog):
                 await ctx.send(f"Bạn đã trang bị {item_name} và tăng {items[item_name].get('defense_power', 0)} điểm phòng thủ!")
         else:
             await ctx.send("Vật phẩm này không thể trang bị được!")
+        ensure_user_fields(user)
         save_users(users)
 
         await ctx.send(f"Bạn đã trang bị {item_name} thành công!")

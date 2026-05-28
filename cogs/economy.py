@@ -2,7 +2,7 @@ from discord.ext import commands
 import json
 import os
 from datetime import datetime, timedelta
-from utils.data_manager import load_users, save_users
+from utils.data_manager import load_users, save_users,ensure_user_fields
 class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 import json
-from utils.data_manager import load_users, save_users, load_json
+from utils.data_manager import load_users, save_users, load_json,ensure_user_fields
 SHOP_ITEMS = load_json('data/items.json')
 class Shop(commands.Cog):
     def __init__(self, bot):
@@ -24,6 +24,7 @@ class Shop(commands.Cog):
             return
         
         user = users[user_id]
+        ensure_user_fields(user)
 
         if item_name not in SHOP_ITEMS:
             await ctx.send("Vật phẩm không tồn tại trong shop!")

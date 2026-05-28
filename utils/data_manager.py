@@ -18,3 +18,13 @@ def load_json(path):
         return {}
     with open(path, 'r') as file:
         return json.load(file)
+    
+def ensure_user_fields(user):
+
+    user.setdefault("max_hp", 100)
+    user.setdefault("attack", 10)
+    user.setdefault("defense", 5)
+    user.setdefault("equipped_weapon", None)
+    user.setdefault("equipped_armor", None)
+
+    return user
