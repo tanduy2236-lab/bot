@@ -2,13 +2,13 @@
     "1308749762413068332": {
         "name": "duytran236vn",
         "level": 1,
-        "exp": 200,
-        "gold": 450,
+        "exp": 240,
+        "gold": 500,
         "last_daily": "2026-05-27 15:42:17",
         "inventory": [
             "potion",
             "sword"
         ],
-        "hp": 25
+        "hp": 17
     }
 }

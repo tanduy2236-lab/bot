@@ -2,10 +2,9 @@ import discord
 from discord.ext import commands
 import random
 import json
-from utils.data_manager import load_users, save_users
-ENEMIES = {
-    "slime": {"name": "Slime", "hp": 50, "attack": 10, "exp": 20, "gold": 30}
-}
+from utils.data_manager import load_users, save_users, load_json
+ENEMIES = load_json('data/enemies.json')
+
 class Battle(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

@@ -12,3 +12,9 @@ def load_users():
 def save_users(users):
     with open(USER_DATA_FILE, 'w') as file:
         json.dump(users, file, indent=4)
+
+def load_json(path):
+    if not os.path.exists(path):
+        return {}
+    with open(path, 'r') as file:
+        return json.load(file)

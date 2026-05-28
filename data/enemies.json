@@ -1,0 +1,22 @@
+{
+    "slime": {
+        "name": "Slime",
+        "description": "A small, gelatinous creature that can be found in various colors and sizes. They are often considered weak, but can be dangerous in large numbers.",
+        "health": 50,
+        "attack": 10,
+        "defense": 5,
+        "speed": 2,
+        "gold": 30,
+        "exp": 20
+    },
+    "goblin": {
+        "name": "Goblin",
+        "description": "A mischievous and cunning creature that often dwells in caves or forests. They are known for their agility and quick attacks.",
+        "health": 80,
+        "attack": 15,
+        "defense": 10,
+        "speed": 3,
+        "gold": 50,
+        "exp": 40
+    }
+}
