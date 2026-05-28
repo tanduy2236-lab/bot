@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord
 import json
 from utils.data_manager import load_users, save_users, load_json
-SHOP_ITEMS = load_json('data/shop_items.json')
+SHOP_ITEMS = load_json('data/items.json')
 class Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

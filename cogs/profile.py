@@ -66,6 +66,10 @@ class Profile(commands.Cog):
 
         embed.add_field(name="HP", value=f"{user.get('hp', 50)}/{user.get('max_hp', 100)}", inline=False)
 
+        embed.add_field(name="Equipped Weapon", value=f"{user.get('equipped_weapon', 'None')}", inline=False)
+
+        embed.add_field(name="Equipped Armor", value=f"{user.get('equipped_armor', 'None')}", inline=False)
+
         await ctx.send(embed=embed)
     
 async def setup(bot):
