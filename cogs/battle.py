@@ -3,6 +3,7 @@ from discord.ext import commands
 import random
 import json
 from utils.data_manager import load_users, save_users, load_json
+from utils.level_system import check_level_up
 ENEMIES = load_json('data/enemies.json')
 
 class Battle(commands.Cog):
@@ -38,6 +39,10 @@ class Battle(commands.Cog):
             user["exp"] += enemy["exp"]
             user["gold"] += enemy["gold"]
 
+            level_up = check_level_up(user)
+            if level_up:
+                await ctx.send(f"Chúc mừng bạn đã lên cấp {user['level']}!")
+            await ctx.send(f"Bạn đã chiến đấu với {enemy['name']} và nhận được {enemy['exp']} EXP và {enemy['gold']} Gold!")
             save_users(users)
 
             embed = discord.Embed(title="Bạn chiến đấu với " + enemy["name"], color=0x00ff00)

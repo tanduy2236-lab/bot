@@ -4,6 +4,7 @@ import discord
 import json
 import os
 from utils.data_manager import load_users, save_users
+from utils.level_system import get_exp_to_next_level
 class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -52,6 +53,12 @@ class Profile(commands.Cog):
         embed = discord.Embed(title=f"{user['name']}", description="Thông tin cơ bản", color=0x00ff00)
    
         embed.add_field(name="Level", value=f"{user['level']}", inline=False)
+        
+        embed.add_field(name="EXP", value=f"{user['exp']} / {get_exp_to_next_level(user['level'])}", inline=False)
+
+        embed.add_field(name="Attack", value=f"{user.get('attack', 10)}", inline=False)
+
+        embed.add_field(name="Defense", value=f"{user.get('defense', 5)}", inline=False)
 
         embed.add_field(name="Gold", value=f"{user['gold']}", inline=False)
 
