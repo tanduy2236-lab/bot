@@ -1,18 +1,21 @@
 {
     "potion": {
         "name": "Potion",
+        "typype": "consumable",
         "description": "A magical liquid that restores health.",
         "price": 50,
         "heal_amount": 50
     },
     "sword": {
         "name": "Sword",
+        "type": "weapon",
         "description": "A sharp blade for combat.",
         "price": 100,
         "attack_power": 20
     },
     "shield":{
         "name": "Shield",
+        "type": "armor",
         "description": "A sturdy barrier for defense.",
         "price": 150,
         "defense_power": 15

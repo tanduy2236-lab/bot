@@ -41,8 +41,8 @@ class Battle(commands.Cog):
 
             level_up = check_level_up(user)
             if level_up:
-                await ctx.send(f"Chúc mừng bạn đã lên cấp {user['level']}!")
-            await ctx.send(f"Bạn đã chiến đấu với {enemy['name']} và nhận được {enemy['exp']} EXP và {enemy['gold']} Gold!")
+                message = f"Chúc mừng bạn đã lên cấp {user['level']}!"
+            await ctx.send(message)
             save_users(users)
 
             embed = discord.Embed(title="Bạn chiến đấu với " + enemy["name"], color=0x00ff00)

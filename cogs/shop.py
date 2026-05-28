@@ -1,12 +1,8 @@
 from discord.ext import commands
 import discord
 import json
-from utils.data_manager import load_users, save_users
-SHOP_ITEMS = {
-    "sword": {"name": "Sword", "price": 100},
-    "shield": {"name": "Shield", "price": 150},
-    "potion": {"name": "Potion", "price": 50}
-}
+from utils.data_manager import load_users, save_users, load_json
+SHOP_ITEMS = load_json('data/shop_items.json')
 class Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

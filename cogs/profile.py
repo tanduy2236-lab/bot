@@ -1,4 +1,3 @@
-from imaplib import Commands
 from discord.ext import commands
 import discord
 import json
@@ -13,7 +12,6 @@ class Profile(commands.Cog):
     async def start_game(self,ctx):
         
         print("Đã vào lệnh start")
-        await ctx.send("BEGIN OK")
         user_id = str(ctx.author.id)
 
         if not os.path.exists('data/users.json'):
@@ -33,7 +31,11 @@ class Profile(commands.Cog):
             "last_daily": "",
             "inventory": [],
             "hp": 100,
-            "max_hp": 100
+            "max_hp": 100,
+            "attack": 10,
+            "defense": 5,
+            "equipped_weapon": None,
+            "equipped_armor": None
         }
         save_users(users)
         await ctx.send("Bạn đã bắt đầu trò chơi thành công!")
