@@ -28,3 +28,11 @@ def ensure_user_fields(user):
     user.setdefault("equipped_armor", None)
 
     return user
+
+BATTLE_DATA_FILE = 'data/battles.json'
+
+def load_battles():
+   return load_json(BATTLE_DATA_FILE)
+def save_battles(battle_data):
+    with open(BATTLE_DATA_FILE, 'w') as file:
+        json.dump(battle_data, file, indent=4)

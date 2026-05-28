@@ -26,9 +26,12 @@ class Inventory(commands.Cog):
         for item in inventory:
             item_list += f"- {item}\n"
 
-        embed = discord.Embed(title=f"{user['name']}'s Inventory", description=item_list, color=0x00ff00)
+        embed = discord.Embed(title=f"{user['name']}'s Inventory",color=0x00ff00)
+        embed.add_field(name="Items",value=item_list,inline=False)
 
-        embed.add_field(name="Items", value=item_list, inline=False)
+        embed.add_field(name="Equipped Weapon", value=f"{user['equipped_weapon'] or 'None'}", inline=False)
+        embed.add_field(name="Equipped Armor", value=f"{user['equipped_armor'] or 'None'}", inline=False)
+    
 
         await ctx.send(embed=embed)
     @commands.command()
@@ -51,10 +54,13 @@ class Inventory(commands.Cog):
             await ctx.send("Bạn không có vật phẩm này trong kho đồ!")
             return
         
-        if item_name == "potion":
+        items = load_json('data/items.json')
+        item_data = items.get(item_name)
+        if item_data and item_data.get("type") == "consumable":
 
-            heal_amount = 50
+            heal_amount = item_data.get("heal_amount", 0)
             user["hp"] = min(user.get("hp", 100) + heal_amount, user.get("max_hp", 100))
+
 
             inventory.remove(item_name)
 
@@ -92,7 +98,6 @@ class Inventory(commands.Cog):
             else:
                 user["equipped_weapon"] = item_name
                 user["attack"] += items[item_name].get("attack_power", 0)
-                save_users(users)
                 await ctx.send(f"Bạn đã trang bị {item_name} và tăng {items[item_name].get('attack_power', 0)} điểm tấn công!")
         elif items[item_name]["type"] == "armor":
             if user.get("equipped_armor"):
@@ -101,14 +106,49 @@ class Inventory(commands.Cog):
             else:
                 user["equipped_armor"] = item_name
                 user["defense"] += items[item_name].get("defense_power", 0)
-                save_users(users)
                 await ctx.send(f"Bạn đã trang bị {item_name} và tăng {items[item_name].get('defense_power', 0)} điểm phòng thủ!")
         else:
             await ctx.send("Vật phẩm này không thể trang bị được!")
         ensure_user_fields(user)
         save_users(users)
+    @commands.command()
+    async def unequip(self, ctx, item_type):
+        user_id = str(ctx.author.id)
+        users = load_users()
 
-        await ctx.send(f"Bạn đã trang bị {item_name} thành công!")
+        if user_id not in users:
+            await ctx.send("Bạn chưa bắt đầu trò chơi, hãy sử dụng lệnh !begin để bắt đầu.")
+            return
+        user = users[user_id]
+
+        ensure_user_fields(user)
+
+        items = load_json('data/items.json')
+
+        if item_name not in items:
+            await ctx.send("Vật phẩm này không tồn tại!")
+            return
+        
+        item = items[item_name]
+
+        if item_type == "weapon":
+            if user.get("equipped_weapon") != item_name:
+               await ctx.send(f"Bạn không trang bị {item_name}!")
+               return
+            user["equipped_weapon"] = None
+            user["attack"] -= item.get("attack_power", 0)
+
+            await ctx.send(f"Bạn đã tháo {item_name} và giảm {item.get('attack_power', 0)} điểm tấn công!")
+        elif item_type == "armor":
+            if user.get("equipped_armor") != item_name:
+               await ctx.send(f"Bạn không trang bị {item_name}!")
+               return
+            user["equipped_armor"] = None
+            user["defense"] -= item.get("defense_power", 0)
+
+            await ctx.send(f"Bạn đã tháo {item_name} và giảm {item.get('defense_power', 0)} điểm phòng thủ!")
+        save_users(users)
+
 
 async def setup(bot):
     await bot.add_cog(Inventory(bot))
