@@ -1,18 +1,18 @@
 {
     "1308749762413068332": {
         "name": "duytran236vn",
-        "level": 2,
-        "exp": 20,
-        "gold": 20,
-        "last_daily": "",
+        "level": 1,
+        "exp": 50,
+        "gold": 66,
+        "last_daily": "2026-05-29 12:39:32",
         "inventory": [
-            "shield",
+            "potion",
             "sword"
         ],
-        "hp": 117,
-        "max_hp": 120,
-        "attack": 15,
-        "defense": 10,
+        "hp": 72,
+        "max_hp": 100,
+        "attack": 10,
+        "defense": 5,
         "equipped_weapon": null,
         "equipped_armor": null
     }

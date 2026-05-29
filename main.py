@@ -40,6 +40,9 @@ async def main():
 async def on_message(message):
     print(f"Nhận được: {message.content}")
     await bot.process_commands(message)
-
+@bot.event
+async def on_command_error(ctx, error):
+    print("ERROR:", repr(error))
+    
 asyncio.run(main())
   

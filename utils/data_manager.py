@@ -16,12 +16,16 @@ def save_users(users):
 def load_json(path):
     if not os.path.exists(path):
         return {}
-    with open(path, 'r') as file:
-        return json.load(file)
-    
+    try:
+        with open(path, 'r') as file:
+            return json.load(file)
+    except json.JSONDecodeError:
+        return {}
+
 def ensure_user_fields(user):
 
     user.setdefault("max_hp", 100)
+    user.setdefault("hp", 100)
     user.setdefault("attack", 10)
     user.setdefault("defense", 5)
     user.setdefault("equipped_weapon", None)
