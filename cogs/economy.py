@@ -22,6 +22,7 @@ class Economy(commands.Cog):
             if user_id not in users:
                 await ctx.send("Bạn chưa bắt đầu trò chơi, hãy sử dụng lệnh !begin để bắt đầu.")
                 return
+            users[user_id] = ensure_user_fields(users[user_id])
 
             last_daily = users[user_id].get("last_daily", "")
             now = datetime.now()

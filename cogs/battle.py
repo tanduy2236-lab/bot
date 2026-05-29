@@ -35,11 +35,20 @@ class Battle(commands.Cog):
 
                 battle_data[user_id] = {
                     "enemy": enemy_name,
-                    "enemy_hp": enemy_data["health"]
+                    "enemy_hp": enemy["hp"]
                 }
 
             battle = battle_data[user_id]
             enemy = ENEMIES[battle["enemy"]]
+
+            enemy_level = user["level"]
+            enemy["hp"] += enemy_level * 10
+            enemy["attack"] += enemy_level * 2
+            enemy["defense"] += enemy_level * 1
+            enemy["exp"] += enemy_level * 5
+            enemy["gold"] += enemy_level * 3
+
+
 
             player_damage = random.randint(max(1, user["attack"] - 5), user["attack"])
 

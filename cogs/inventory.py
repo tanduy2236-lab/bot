@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import json
-from utils.data_manager import load_users, save_users, load_json,ensure_user_fields
+from utils.data_manager import *
 class Inventory(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -112,7 +112,7 @@ class Inventory(commands.Cog):
         ensure_user_fields(user)
         save_users(users)
     @commands.command()
-    async def unequip(self, ctx, item_type):
+    async def unequip(self, ctx, item_name):
         user_id = str(ctx.author.id)
         users = load_users()
 
@@ -122,6 +122,7 @@ class Inventory(commands.Cog):
         user = users[user_id]
 
         ensure_user_fields(user)
+        save_users(users)
 
         items = load_json('data/items.json')
 
@@ -131,7 +132,7 @@ class Inventory(commands.Cog):
         
         item = items[item_name]
 
-        if item_type == "weapon":
+        if item.get("type") == "weapon":
             if user.get("equipped_weapon") != item_name:
                await ctx.send(f"Bạn không trang bị {item_name}!")
                return
@@ -139,7 +140,7 @@ class Inventory(commands.Cog):
             user["attack"] -= item.get("attack_power", 0)
 
             await ctx.send(f"Bạn đã tháo {item_name} và giảm {item.get('attack_power', 0)} điểm tấn công!")
-        elif item_type == "armor":
+        elif item.get("type") == "armor":
             if user.get("equipped_armor") != item_name:
                await ctx.send(f"Bạn không trang bị {item_name}!")
                return

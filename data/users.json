@@ -11,9 +11,9 @@
         ],
         "hp": 117,
         "max_hp": 120,
-        "attack": 35,
-        "defense": 25,
-        "equipped_weapon": "sword",
-        "equipped_armor": "shield"
+        "attack": 15,
+        "defense": 10,
+        "equipped_weapon": null,
+        "equipped_armor": null
     }
 }
