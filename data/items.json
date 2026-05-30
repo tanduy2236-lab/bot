@@ -19,5 +19,19 @@
         "description": "A sturdy barrier for defense.",
         "price": 150,
         "defense_power": 15
+    },
+    "godly_sword": {
+        "name": "Godly Sword",
+        "type": "weapon",
+        "description": "A legendary sword with immense power.",
+        "price": 1000,
+        "attack_power": 50
+    },
+    "godly_shield": {
+        "name": "Godly Shield",
+        "type": "armor",
+        "description": "A legendary shield with immense defense.",
+        "price": 1000,
+        "defense_power": 50
     }
 }

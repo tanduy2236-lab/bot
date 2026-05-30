@@ -16,6 +16,7 @@ class Battle(commands.Cog):
         users = load_users()
 
         battle_data = load_battles()
+       
 
         if user_id not in users:
             await ctx.send("Bạn chưa bắt đầu trò chơi, hãy sử dụng lệnh !begin để bắt đầu.")
@@ -35,89 +36,133 @@ class Battle(commands.Cog):
 
             battle_data[user_id] = {
                 "enemy": enemy_name,
-                "enemy_hp": enemy_data["health"]
+                "enemy_hp": enemy_data["health"],
+                "player_turn": True,
+                "defending": False
                 }
-        if user_id in battle_data:
-            current_enemy = battle_data[user_id]["enemy"]
-            if current_enemy != enemy_name:
-                await ctx.send("Bạn đang chiến đấu với một kẻ thù khác! Hãy hoàn thành trận chiến hiện tại trước khi chiến đấu với kẻ thù mới.")
-                return
-            battle = battle_data[user_id]
-        enemy = ENEMIES[battle["enemy"]]
-
-        enemy_level = user["level"]
-       
-        enemy_hp_scaled = enemy["health"] + enemy_level * 10
-
-        enemy_attack_scaled = enemy["attack"] + enemy_level * 2
-
-        enemy_defense_scaled = enemy["defense"] + enemy_level * 1
-
-        enemy_exp_scaled = enemy["exp"] + enemy_level * 5
-
-        enemy_gold_scaled = enemy["gold"] + enemy_level * 3
-
-
-        player_damage = random.randint(max(1, user["attack"] - 5), user["attack"])
-
-        
-        battle["enemy_hp"] -= player_damage
-        level_up = False
-        if battle["enemy_hp"] <= 0:
-            user["exp"] += enemy_exp_scaled
-            user["gold"] += enemy_gold_scaled
-
-            level_up = check_level_up(user)
-
-            save_users(users)
-
-            del battle_data[user_id]
-
+            
             save_battles(battle_data)
 
-            embed = discord.Embed(title="Bạn đã đánh bại " + enemy["name"] + "!", color=0x00ff00)
+        embed = discord.Embed(title=f"Bạn đã bắt đầu chiến đấu với {ENEMIES[enemy_name]['name']}!", color=0x00ff00)
+        embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
+        embed.add_field(name=f"{ENEMIES[enemy_name]['name']} HP", value=f"{battle_data[user_id]['enemy_hp']} HP", inline=False)
+        embed.add_field(name="Hành động", value="Sử dụng lệnh !attack để tấn công kẻ thù!", inline=False)
+        await ctx.send(embed=embed)
+    async def enemy_turn(self, ctx,user, enemy, battle):
+            users = load_users()
+     
+            battle_data = load_battles()
 
-            embed.add_field(name="Phần thưởng", value=f"EXP: {enemy_exp_scaled}, Gold: {enemy_gold_scaled}", inline=False)
+            user_id = str(ctx.author.id)
 
+            user = users[user_id]
+
+            battle = battle_data[user_id]
+
+            enemy_damage = random.randint(1, enemy["attack"])
+            if battle["defending"]:
+                enemy_damage //= 2
+            enemy_damage = max(1, enemy_damage - user["defense"])
+            user["hp"] -= enemy_damage
+            battle["defending"] = False
+            battle["player_turn"] = True
+
+            if user["hp"] <= 0:
+                user["hp"] = 0
+                del battle_data[user_id]
+                save_users(users)
+                save_battles(battle_data)
+
+                embed = discord.Embed(title="Bạn đã bị đánh bại bởi " + enemy["name"] + "!", color=0xff0000)
+                await ctx.send(embed=embed)
+                return
+            save_users(users)
+            save_battles(battle_data)
+            embed = discord.Embed(title=f"{enemy['name']} đã tấn công bạn!", color=0xff0000)
+            embed.add_field(name=f"{enemy['name']} gây ra", value=f"{enemy_damage} damage", inline=False)
+            embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
             await ctx.send(embed=embed)
 
-            if level_up:
-                await ctx.send(f"Chúc mừng bạn đã lên cấp! Bạn hiện tại là cấp {user['level']} với {user['hp']} HP, {user['attack']} Attack và {user['defense']} Defense.")
+
+    @commands.command()
+    async def attack(self, ctx):
+            user_id = str(ctx.author.id)
+
+            users = load_users()
+            battle_data = load_battles()
+
+            if user_id not in battle_data:
+                await ctx.send("Bạn không đang chiến đấu với kẻ thù nào! Sử dụng lệnh !fight <enemy_name> để bắt đầu chiến đấu.")
                 return
+            
+            user = users[user_id]
+            ensure_user_fields(user)
 
-        enemy_damage = random.randint(1, enemy["attack"])
+            battle = battle_data[user_id]
+            ensure_battle_fields(battle)
+            if not battle["player_turn"]:
+                await ctx.send("Chưa đến lượt bạn! Hãy chờ đối thủ tấn công xong.")
+                return
+            enemy = ENEMIES[battle["enemy"]]
 
-        enemy_damage = max(1, enemy_damage - user["defense"])
+            player_damage = random.randint(max(1, user["attack"] - 5), user["attack"])
 
-        user["hp"] -= enemy_damage
-        if user["hp"] <= 0:
-            user["hp"] = 0
+            battle["enemy_hp"] -= player_damage
+            battle["player_turn"] = False
 
+            if battle["enemy_hp"] <= 0:
+                battle["enemy_hp"] = 0
+
+                user["exp"] += enemy["exp"]
+                user["gold"] += enemy["gold"]
+
+                level_up = check_level_up(user)
+                save_users(users)
+
+                del battle_data[user_id]
+                save_battles(battle_data)
+
+                embed = discord.Embed(title="Bạn đã đánh bại " + enemy["name"] + "!", color=0x00ff00)
+                embed.add_field(name="Phần thưởng", value=f"EXP: {enemy['exp']}, Gold: {enemy['gold']}", inline=False)
+                await ctx.send(embed=embed)
+                return
+            
+      
             save_users(users)
+            save_battles(battle_data)
+            embed = discord.Embed(title=f"Đang chiến đấu với {enemy['name']}", color=0x00ff00)
+            embed.add_field(name="Bạn gây ra", value=f"{player_damage} damage", inline=False)
+            embed.add_field(name=f"{enemy['name']} còn lại", value=f"{battle['enemy_hp']} HP", inline=False)
+            embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
+            embed.add_field(name="Hành động tiếp theo", value="Sử dụng lệnh !attack để tiếp tục tấn công kẻ thù!", inline=False)
+            await ctx.send(embed=embed)
+            await self.enemy_turn(ctx,user, enemy, battle)
+    @commands.command()
+    async def defend(self, ctx):
+            user_id = str(ctx.author.id)
 
-            del battle_data[user_id]
+            users = load_users()
+            battle_data = load_battles()
 
+            if user_id not in battle_data:
+                await ctx.send("Bạn không đang chiến đấu với kẻ thù nào! Sử dụng lệnh !fight <enemy_name> để bắt đầu chiến đấu.")
+                return
+            user = users[user_id]
+            battle = battle_data[user_id]
+            enemy_data = ENEMIES[battle["enemy"]]
+            if not battle["player_turn"]:
+                await ctx.send("Chưa đến lượt bạn! Hãy chờ đối thủ tấn công xong.")
+                return
+            battle["defending"] = True
+            battle["player_turn"] = False
             save_battles(battle_data)
 
-            save_users(users)
-
-            await ctx.send(f"Bạn đã bị " + enemy["name"] + " đánh bại! Hãy cố gắng hơn lần sau.")
-            return
-        save_users(users)
-        save_battles(battle_data)
-
-        embed = discord.Embed(title=f"Đang chiến đấu với {enemy['name']}", color=0x00ff00)
-
-        embed.add_field(name="Bạn gây ra", value=f"{player_damage} damage", inline=False)
-
-        embed.add_field(name=f"{enemy['name']} còn lại", value=f"{battle['enemy_hp']} HP", inline=False)
-
-        embed.add_field(name=f"{enemy['name']} phản đòn", value=f"{enemy_damage} damage", inline=False)
-
-        embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
+            embed = discord.Embed(title="Phòng thủ!", description="Bạn đang phòng thủ trước đòn tấn công của kẻ thù!", color=0x00ff00)
+            embed.add_field(name=f"{enemy_data['name']} đang chuẩn bị tấn công bạn!", value="Hãy chờ đòn tấn công của kẻ thù!", inline=False)
+            await ctx.send(embed=embed)
+            await self.enemy_turn(ctx,user, enemy_data, battle)
 
 
-        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Battle(bot))

@@ -4,12 +4,14 @@ import os
 USER_DATA_FILE = 'data/users.json'
 
 def load_users():
+    print("LOAD FROM:", os.path.abspath(USER_DATA_FILE))
     if not os.path.exists(USER_DATA_FILE):
         return {}
     with open(USER_DATA_FILE, 'r') as file:
         return json.load(file)
 
 def save_users(users):
+    print("SAVE TO:", os.path.abspath(USER_DATA_FILE))
     with open(USER_DATA_FILE, 'w') as file:
         json.dump(users, file, indent=4)
 
@@ -40,3 +42,8 @@ def load_battles():
 def save_battles(battle_data):
     with open(BATTLE_DATA_FILE, 'w') as file:
         json.dump(battle_data, file, indent=4)
+
+def ensure_battle_fields(battle):
+    battle.setdefault("player_turn", True)
+    battle.setdefault("defending", False)
+    return battle

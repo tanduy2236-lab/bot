@@ -18,5 +18,15 @@
         "speed": 3,
         "gold": 50,
         "exp": 40
+    },
+    "dragon": {
+        "name": "Dragon",
+        "description": "A powerful and fearsome creature that breathes fire and has scales as hard as armor. They are often considered the kings of the forest.",
+        "health": 200,
+        "attack": 30,
+        "defense": 20,
+        "speed": 5,
+        "gold": 100,
+        "exp": 80
     }
 }
