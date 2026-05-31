@@ -7,7 +7,17 @@
         "defense": 5,
         "speed": 2,
         "gold": 30,
-        "exp": 20
+        "exp": 20,
+        "drop": [
+            {
+                "item": "potion",
+                "chance": 50
+            },
+            {
+                "item": "sword",
+                "chance": 20
+            }
+        ]
     },
     "goblin": {
         "name": "Goblin",
@@ -17,7 +27,17 @@
         "defense": 10,
         "speed": 3,
         "gold": 50,
-        "exp": 40
+        "exp": 40,
+        "drop": [
+            {
+                "item": "potion",
+                "chance": 40
+            },
+            {
+                "item": "shield",
+                "chance": 10
+            }
+        ]
     },
     "dragon": {
         "name": "Dragon",
@@ -27,6 +47,16 @@
         "defense": 20,
         "speed": 5,
         "gold": 100,
-        "exp": 80
+        "exp": 80,
+        "drop": [
+            {
+                "item": "godly_sword",
+                "chance": 5
+            },
+            {
+                "item": "godly_shield",
+                "chance": 5
+            }
+        ]
     }
 }

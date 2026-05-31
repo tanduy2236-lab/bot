@@ -73,6 +73,12 @@ class Profile(commands.Cog):
         embed.add_field(name="Equipped Armor", value=f"{user.get('equipped_armor', 'None')}", inline=False)
 
         await ctx.send(embed=embed)
+    @commands.command()
+    async def help_profile(self, ctx):
+        embed = discord.Embed(title="Hướng dẫn lệnh profile", color=0x00ff00)
+        embed.add_field(name="!begin", value="Bắt đầu trò chơi và tạo hồ sơ cho bạn.", inline=False)
+        embed.add_field(name="!profile", value="Xem thông tin hồ sơ của bạn, bao gồm cấp độ, EXP, vàng, v.v.", inline=False)
+        await ctx.send(embed=embed)
     
 async def setup(bot):
     await bot.add_cog(Profile(bot))

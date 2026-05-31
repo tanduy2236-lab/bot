@@ -44,6 +44,11 @@ class Economy(commands.Cog):
         except Exception as e:
             await ctx.send("Đã xảy ra lỗi khi nhận phần thưởng hàng ngày. Vui lòng thử lại sau.")
             print(f"Lỗi trong lệnh daily: {e}")
+    @commands.command()
+    async def help_economy(self, ctx):
+        embed = discord.Embed(title="Hướng dẫn lệnh economy", color=0x00ff00)
+        embed.add_field(name="!daily", value="Nhận phần thưởng hàng ngày (vàng). Có thể nhận lại sau 24 giờ.", inline=False)
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Economy(bot))

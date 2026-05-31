@@ -149,7 +149,14 @@ class Inventory(commands.Cog):
 
             await ctx.send(f"Bạn đã tháo {item_name} và giảm {item.get('defense_power', 0)} điểm phòng thủ!")
         save_users(users)
-
+    @commands.command()
+    async def help_inventory(self, ctx):
+        embed = discord.Embed(title="Hướng dẫn lệnh inventory", color=0x00ff00)
+        embed.add_field(name="!inventory", value="Xem kho đồ của bạn, bao gồm các vật phẩm và trang bị đang sử dụng.", inline=False)
+        embed.add_field(name="!use <item_name>", value="Sử dụng một vật phẩm tiêu hao trong kho đồ của bạn.", inline=False)
+        embed.add_field(name="!equip <item_name>", value="Trang bị một vũ khí hoặc áo giáp từ kho đồ của bạn để tăng thuộc tính.", inline=False)
+        embed.add_field(name="!unequip <item_name>", value="Tháo một vũ khí hoặc áo giáp đang trang bị để giảm thuộc tính.", inline=False)
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Inventory(bot))

@@ -1,1 +1,9 @@
-{}
+{
+    "1308749762413068332": {
+        "enemy": "slime",
+        "enemy_hp": 50,
+        "player_turn": true,
+        "defending": false,
+        "cooldowns": {}
+    }
+}

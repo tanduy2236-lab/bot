@@ -1,0 +1,12 @@
+{
+    "fireball": {
+        "name": "Fireball",
+        "damage_multiplier": 1.5,
+        "cooldown": 3
+    },
+    "heavy_strike": {
+        "name": "Heavy Strike",
+        "damage_multiplier": 2.0,
+        "cooldown": 5
+    }
+}
