@@ -1,7 +1,8 @@
 {
     "1308749762413068332": {
         "enemy": "slime",
-        "enemy_hp": 50,
+        "enemy_level": 2,
+        "enemy_hp": 122,
         "player_turn": true,
         "defending": false,
         "cooldowns": {}

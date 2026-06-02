@@ -2,21 +2,24 @@
     "1308749762413068332": {
         "name": "duytran236vn",
         "level": 3,
-        "exp": 20,
-        "gold": 28400,
+        "exp": 260,
+        "gold": 28680,
         "last_daily": "2026-05-30 11:41:34",
         "inventory": [
             "potion",
             "sword",
             "godly_sword",
             "godly_shield",
+            "potion",
+            "potion",
+            "potion",
             "potion"
         ],
-        "hp": 140,
+        "hp": 120,
         "max_hp": 140,
-        "attack": 20,
+        "attack": 70,
         "defense": 65,
-        "equipped_weapon": null,
+        "equipped_weapon": "godly_sword",
         "equipped_armor": "godly_shield"
     }
 }

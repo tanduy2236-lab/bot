@@ -33,10 +33,22 @@ class Battle(commands.Cog):
         if user_id not in battle_data:
                 
             enemy_data = ENEMIES[enemy_name]
+            enemy = enemy_data.copy()
+
+            enemy_level = max(1, user["level"] + random.randint(-1, 1))
+            enemy["health"] = enemy["health"] + (enemy_level - 1) * 10
+            enemy["attack"] = enemy["attack"] + (enemy_level - 1) * 2
+            enemy["defense"] = enemy["defense"] + (enemy_level - 1)    
+            enemy["exp"] = enemy["exp"] + (enemy_level - 1) * 5
+            enemy["gold"] = enemy["gold"] + (enemy_level - 1) * 5
+
+            scaled_hp = enemy_data["health"] + (enemy_level - 1) * 10
+
 
             battle_data[user_id] = {
                 "enemy": enemy_name,
-                "enemy_hp": enemy_data["health"],
+                "enemy_level": enemy_level,
+                "enemy_hp": scaled_hp,
                 "player_turn": True,
                 "defending": False,
                 "cooldowns": {}
@@ -44,10 +56,10 @@ class Battle(commands.Cog):
             
             save_battles(battle_data)
 
-        embed = discord.Embed(title=f"Bạn đã bắt đầu chiến đấu với {ENEMIES[enemy_name]['name']}!", color=0x00ff00)
+        embed = discord.Embed(title=f"Bạn đã bắt đầu chiến đấu với {ENEMIES[enemy_name]['name']} L{battle_data[user_id]['enemy_level']}!", color=0x00ff00)
         embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
         embed.add_field(name=f"{ENEMIES[enemy_name]['name']} HP", value=f"{battle_data[user_id]['enemy_hp']} HP", inline=False)
-        embed.add_field(name="Hành động", value="Sử dụng lệnh !attack để tấn công kẻ thù!", inline=False)
+        embed.add_field(name="Hành động", value="Sử dụng lệnh !attack để tấn công kẻ thù! || !defend để phòng thủ! || !skill <skill_name> để sử dụng kỹ năng!", inline=False)
         await ctx.send(embed=embed)
     async def enemy_turn(self, ctx,user, enemy, battle):
             users = load_users()
@@ -106,7 +118,16 @@ class Battle(commands.Cog):
                 return
             enemy = ENEMIES[battle["enemy"]]
 
+            enemy_level = user["level"] + random.randint(-1, 1)
+            enemy["health"] = enemy["health"] + (enemy_level - 1) * 10
+            enemy["attack"] = enemy["attack"] + (enemy_level - 1) * 2
+            enemy["defense"] = enemy["defense"] + (enemy_level - 1)
+            enemy["exp"] = enemy["exp"] + (enemy_level - 1) * 5
+            enemy["gold"] = enemy["gold"] + (enemy_level - 1) * 5   
+
             player_damage = random.randint(max(1, user["attack"] - 5), user["attack"])
+
+            player_damage = max(1, player_damage - enemy["defense"])
             crit_chance = random.randint(1, 100) <= 10
             if crit_chance:
                 player_damage *= 2
@@ -125,7 +146,7 @@ class Battle(commands.Cog):
                      for drop in enemy["drop"]:
                         if random.randint(1, 100) <= drop["chance"]:
                             item = drop["item"]
-                            user.setdefault("inventory", {})
+                            user.setdefault("inventory", [])
                             user["inventory"].append(item)
                             loot_message = f"Bạn nhận được: {item}!"
 
