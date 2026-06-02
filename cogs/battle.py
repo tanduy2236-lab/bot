@@ -59,7 +59,7 @@ class Battle(commands.Cog):
         embed = discord.Embed(title=f"Bạn đã bắt đầu chiến đấu với {ENEMIES[enemy_name]['name']} L{battle_data[user_id]['enemy_level']}!", color=0x00ff00)
         embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
         embed.add_field(name=f"{ENEMIES[enemy_name]['name']} HP", value=f"{battle_data[user_id]['enemy_hp']} HP", inline=False)
-        embed.add_field(name="Hành động", value="Sử dụng lệnh !attack để tấn công kẻ thù! || !defend để phòng thủ! || !skill <skill_name> để sử dụng kỹ năng!", inline=False)
+        embed.add_field(name="Hành động", value="Sử dụng lệnh !attack để tấn công kẻ thù! hay !defend để phòng thủ! hay !skill <skill_name> để sử dụng kỹ năng!", inline=False)
         await ctx.send(embed=embed)
     async def enemy_turn(self, ctx,user, enemy, battle):
             users = load_users()
