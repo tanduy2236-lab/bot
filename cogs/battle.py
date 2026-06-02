@@ -172,7 +172,7 @@ class Battle(commands.Cog):
             embed.add_field(name="Bạn gây ra", value=damage_text, inline=False)
             embed.add_field(name=f"{enemy['name']} còn lại", value=f"{battle['enemy_hp']} HP", inline=False)
             embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
-            embed.add_field(name="Hành động tiếp theo", value="Sử dụng lệnh !attack để tiếp tục tấn công kẻ thù!", inline=False)
+            embed.add_field(name="Hành động tiếp theo", value="Sử dụng lệnh !attack để tiếp tục tấn công kẻ thù!, !defend để phòng thủ!, !skill <skill_name> để sử dụng kỹ năng!", inline=False)
             await ctx.send(embed=embed)
             await self.enemy_turn(ctx,user, enemy, battle)
     @commands.command()
