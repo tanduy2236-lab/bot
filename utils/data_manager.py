@@ -23,11 +23,14 @@ def load_json(path):
         return {}
 
 def ensure_user_fields(user):
-
+    user.setdefault("level", 1)
+    user.setdefault("exp", 0)
     user.setdefault("max_hp", 100)
     user.setdefault("hp", 100)
     user.setdefault("attack", 10)
     user.setdefault("defense", 5)
+    user.setdefault("gold", 100)
+    user.setdefault("inventory", [])
     user.setdefault("equipped_weapon", None)
     user.setdefault("equipped_armor", None)
 

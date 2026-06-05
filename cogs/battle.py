@@ -4,63 +4,21 @@ import random
 import json
 from utils.data_manager import *
 from utils.level_system import check_level_up
+from views.enemy_select_view import EnemySelectView
 ENEMIES = load_json('data/enemies.json')
 SKILLS = load_json('data/skills.json')
 class Battle(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
-    async def fight(self, ctx, enemy_name):
+    async def fight(self, ctx):
         user_id = str(ctx.author.id)
-
         users = load_users()
-
-        battle_data = load_battles()
-       
-
         if user_id not in users:
             await ctx.send("Bạn chưa bắt đầu trò chơi, hãy sử dụng lệnh !begin để bắt đầu.")
             return
-        
-        user = users[user_id]
-        ensure_user_fields(user)
-        save_users(users)
-
-        if enemy_name not in ENEMIES:
-            await ctx.send("Không tìm thấy kẻ thù này!")
-            return
-            
-        if user_id not in battle_data:
-                
-            enemy_data = ENEMIES[enemy_name]
-            enemy = enemy_data.copy()
-
-            enemy_level = max(1, user["level"] + random.randint(-1, 1))
-            enemy["health"] = enemy["health"] + (enemy_level - 1) * 10
-            enemy["attack"] = enemy["attack"] + (enemy_level - 1) * 2
-            enemy["defense"] = enemy["defense"] + (enemy_level - 1)    
-            enemy["exp"] = enemy["exp"] + (enemy_level - 1) * 5
-            enemy["gold"] = enemy["gold"] + (enemy_level - 1) * 5
-
-            scaled_hp = enemy_data["health"] + (enemy_level - 1) * 10
-
-
-            battle_data[user_id] = {
-                "enemy": enemy_name,
-                "enemy_level": enemy_level,
-                "enemy_hp": scaled_hp,
-                "player_turn": True,
-                "defending": False,
-                "cooldowns": {}
-                }
-            
-            save_battles(battle_data)
-
-        embed = discord.Embed(title=f"Bạn đã bắt đầu chiến đấu với {ENEMIES[enemy_name]['name']} L{battle_data[user_id]['enemy_level']}!", color=0x00ff00)
-        embed.add_field(name="HP của bạn", value=f"{user['hp']} HP", inline=False)
-        embed.add_field(name=f"{ENEMIES[enemy_name]['name']} HP", value=f"{battle_data[user_id]['enemy_hp']} HP", inline=False)
-        embed.add_field(name="Hành động", value="Sử dụng lệnh !attack để tấn công kẻ thù! hay !defend để phòng thủ! hay !skill <skill_name> để sử dụng kỹ năng!", inline=False)
-        await ctx.send(embed=embed)
+        embed = discord.Embed(title="Chọn kẻ thù để chiến đấu", description="Hãy chọn một kẻ thù từ danh sách dưới đây để bắt đầu chiến đấu!", color=0x00ff00)
+        await ctx.send(embed=embed, view=EnemySelectView())
     async def enemy_turn(self, ctx,user, enemy, battle):
             users = load_users()
      

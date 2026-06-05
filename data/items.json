@@ -33,5 +33,56 @@
         "description": "A legendary shield with immense defense.",
         "price": 1000,
         "defense_power": 50
+    },
+    "Invisibility Cloak": {
+        "name": "Invisibility Cloak",
+        "type": "armor",
+        "description": "A cloak that grants temporary invisibility.",
+        "price": 500,
+        "defense_power": 10
+    },
+    "Health Elixir": {
+        "name": "Health Elixir",
+        "type": "consumable",
+        "description": "A powerful elixir that fully restores health.",
+        "price": 200,
+        "heal_amount": 100
+    },
+    "Fire Sword": {
+        "name": "Fire Sword",
+        "type": "weapon",
+        "description": "A sword imbued with the power of fire, dealing extra damage.",
+        "price": 300,
+        "attack_power": 30
+    },
+    "Ice Shield": {
+        "name": "Ice Shield",
+        "type": "armor",
+        "description": "A shield that can freeze attackers, reducing their attack power.",
+        "price": 300,
+        "defense_power": 20
+    },
+    "Thunder Hammer": {
+        "name": "Thunder Hammer",
+        "type": "weapon",
+        "description": "A hammer that strikes with the power of thunder, stunning enemies.",
+        "price": 400,
+        "attack_power": 40
+    },
+    "Earth Armor": {
+        "name": "Earth Armor",
+        "type": "armor",
+        "description": "Armor that increases defense and reduces damage taken.",
+        "price": 400,
+        "defense_power": 30
+    },
+    "Wind Dagger": {
+        "name": "Wind Dagger",
+        "type": "weapon",
+        "description": "A dagger that strikes with the speed of the wind, allowing for multiple attacks.",
+        "price": 250,
+        "attack_power": 25
     }
+
+    
 }

@@ -1,8 +1,8 @@
 {
     "1308749762413068332": {
-        "enemy": "slime",
-        "enemy_level": 2,
-        "enemy_hp": 122,
+        "enemy": "goblin",
+        "enemy_level": 1,
+        "enemy_hp": 80,
         "player_turn": true,
         "defending": false,
         "cooldowns": {}
